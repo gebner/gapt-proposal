@@ -161,7 +161,7 @@ class Const private[expr] (val name: String, val exptype: TA) extends LambdaExpr
 class App private[expr] (val function: LambdaExpression, val arg: LambdaExpression) extends LambdaExpression {
   val exptype: TA =
     function.exptype match {
-      case (in -> out) => out
+      case (in -> out) if in == arg.exptype => out
       case _ => throw new IllegalArgumentException(
         s"Types don't fit while constructing application ($function : ${function.exptype}) ($arg : ${arg.exptype})")
     }
