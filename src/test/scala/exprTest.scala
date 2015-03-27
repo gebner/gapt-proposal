@@ -2,28 +2,44 @@ package at.logic.gapt.expr
 import org.specs2.mutable._
 
 class ExprTest extends Specification {
-  "FOL traits" should {
+  "FOL traits for expressions constructed by hand" should {
     val f = Const("f", FOLFunctionHeadType(3))
     val c = Const("c", Ti)
     val R = Const("R", FOLAtomHeadType(2))
     val x = Var("x", Ti)
 
-    "terms" in {
-      App(f, List(c, c, c)) must beAnInstanceOf[FOLTerm]
+    "be on terms" in {
+      Apps(f, c, c, c) must beAnInstanceOf[FOLTerm]
+
+      x must beAnInstanceOf[FOLVar]
     }
 
-    "formulas" in {
+    "be on formulas" in {
       R must beAnInstanceOf[PartialFOLFormula]
       R.asInstanceOf[PartialFOLFormula].numberOfArguments must be_==(2)
 
       App(R, c) must beAnInstanceOf[PartialFOLFormula]
-      App(R, List(c, c)) must beAnInstanceOf[FOLFormula]
+      Apps(R, c, c) must beAnInstanceOf[FOLFormula]
 
-      Abs(x, App(R, List(x, x))) must beAnInstanceOf[FOLFormulaWithBoundVariable]
-      App(ForallQ(Ti), Abs(x, App(R, List(x, x)))) must beAnInstanceOf[FOLFormula]
+      Abs(x, Apps(R, x, x)) must beAnInstanceOf[FOLFormulaWithBoundVariable]
+      App(ForallQ(Ti), Abs(x, Apps(R, x, x))) must beAnInstanceOf[FOLFormula]
 
       AndC() must beAnInstanceOf[PartialFOLFormula]
-      App(AndC(), List(App(R, List(c, c)), App(R, List(c, c)))) must beAnInstanceOf[FOLFormula]
+      Apps(AndC(), Apps(R, c, c), Apps(R, c, c)) must beAnInstanceOf[FOLFormula]
+
+      TopC() must beAnInstanceOf[FOLFormula]
+      TopC() must beAnInstanceOf[LogicalSymbol]
+    }
+  }
+
+  "FOL helpers" should {
+    "have correct static types" in {
+      val a: FOLTerm = FOLFunction("f", FOLVar("x"), FOLFunction("c"))
+      val b: FOLFormula = FOLAtom("R", FOLVar("x"), FOLFunction("c"))
+      val c: FOLFormula = And(FOLAtom("R"), FOLAtom("P"))
+      val d: FOLFormula = All(FOLVar("x"), FOLAtom("R", FOLVar("x")))
+      val e: FOLFormula = Top()
+      ok
     }
   }
 }
