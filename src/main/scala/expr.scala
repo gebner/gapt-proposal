@@ -66,47 +66,21 @@ object ForallQ {
   }
 }
 
-object AndC {
-  val symbol = "∧"
-
-  def apply() = Const(symbol, To -> (To -> To))
+class LogicalConnective(symbol: String, ty: TA) {
+  def apply() = Const(symbol, ty)
   def unapply(exp: LambdaExpression): Boolean = exp match {
     case Const(sym, exptype) => unapply(sym, exptype)
     case _ => false
   }
   def unapply(pair: (String, TA)): Boolean = pair match {
-    case (`symbol`, To -> (To -> To)) => true
+    case (`symbol`, `ty`) => true
     case _ => false
   }
 }
 
-object NegC {
-  val symbol = "¬"
-
-  def apply() = Const(symbol, To -> To)
-  def unapply(exp: LambdaExpression): Boolean = exp match {
-    case Const(sym, exptype) => unapply(sym, exptype)
-    case _ => false
-  }
-  def unapply(pair: (String, TA)): Boolean = pair match {
-    case (`symbol`, To -> To) => true
-    case _ => false
-  }
-}
-
-object TopC {
-  val symbol = "⊤"
-
-  def apply() = Const(symbol, To)
-  def unapply(exp: LambdaExpression): Boolean = exp match {
-    case Const(sym, exptype) => unapply(sym, exptype)
-    case _ => false
-  }
-  def unapply(pair: (String, TA)): Boolean = pair match {
-    case (`symbol`, To) => true
-    case _ => false
-  }
-}
+object AndC extends LogicalConnective("∧", To -> (To -> To))
+object NegC extends LogicalConnective("¬", To -> To)
+object TopC extends LogicalConnective("⊤", To)
 
 // Traits
 
