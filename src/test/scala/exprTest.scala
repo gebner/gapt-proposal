@@ -42,4 +42,10 @@ class ExprTest extends Specification {
       ok
     }
   }
+
+  "toString" should {
+    "terminate" in {
+      FOLAtom("P").toString must beEqualTo("P()")
+    }
+  }
 }
