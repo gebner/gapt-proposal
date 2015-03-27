@@ -167,7 +167,7 @@ class App private[expr] (val function: LambdaExpression, val arg: LambdaExpressi
     }
 }
 
-class Abs(val variable: Var, val term: LambdaExpression) extends LambdaExpression {
+class Abs private[expr] (val variable: Var, val term: LambdaExpression) extends LambdaExpression {
   val exptype: TA = variable.exptype -> term.exptype
 }
 
