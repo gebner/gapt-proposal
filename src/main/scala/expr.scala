@@ -138,7 +138,7 @@ trait FOLConnective extends LogicalSymbol with PartialFOLFormula
 
 // Expressions
 
-abstract class LambdaExpression {
+sealed abstract class LambdaExpression {
   def exptype: TA
 
   override def toString = this match {
