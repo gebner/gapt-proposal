@@ -144,7 +144,7 @@ abstract class LambdaExpression {
   override def toString = this match {
     case All(Var(x, Ti), e) => s"∀$x.$e"
     case All(Var(x, t), e) => s"∀$x:$t.$e"
-    case Ands(xs) => s"(${xs mkString "∧"})"
+    case Ands(xs @ Seq(_, _*)) => s"(${xs mkString "∧"})"
     case FOLAtom(r, xs) => s"$r(${xs mkString ","})"
     case FOLFunction(f, xs) => s"$f(${xs mkString ","})"
 
