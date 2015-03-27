@@ -373,6 +373,19 @@ object Ands {
   }
 }
 
+object Neg {
+  def apply(a: LambdaExpression): LambdaExpression = App(NegC(), a)
+  def apply(a: FOLFormula): FOLFormula = apply(a.asInstanceOf[LambdaExpression]).asInstanceOf[FOLFormula]
+  def unapply(e: LambdaExpression): Option[LambdaExpression] = e match {
+    case App(NegC(), a) => Some(a)
+    case _ => None
+  }
+  def unapply(e: FOLFormula): Option[FOLFormula] = e.asInstanceOf[LambdaExpression] match {
+    case Neg(a: FOLFormula) => Some(a)
+    case _ => None
+  }
+}
+
 object Top {
   def apply(): FOLFormula = TopC().asInstanceOf[FOLFormula]
   def unapply(e: LambdaExpression): Boolean = TopC.unapply(e)
